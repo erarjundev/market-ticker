@@ -1,186 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <title>Market Ticker</title>
 
 <style>
-html,body{
-  margin:0;
-  padding:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:#090909;
+
+* {
+  box-sizing: border-box;
 }
 
-.market{
-  width:100%;
-  height:44px;
-  display:flex;
-  align-items:center;
-  background:#090909;
-  border-top:1px solid #242424;
-  border-bottom:1px solid #242424;
-  box-sizing:border-box;
-  font-family:Arial,Helvetica,sans-serif;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: #090909;
+  overflow: hidden;
 }
 
-.badge{
-  height:100%;
-  min-width:70px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  background:#111;
-  color:#fff;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.6px;
-  border-right:1px solid #292929;
-  box-sizing:border-box;
+.market-ticker {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  background: #090909;
+  border-top: 1px solid #242424;
+  border-bottom: 1px solid #242424;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#ff3030;
-  box-shadow:0 0 7px rgba(255,48,48,.85);
-  animation:pulse 1.4s infinite;
+/* LEFT MARKET BADGE */
+
+.market-badge {
+  flex: 0 0 72px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  background: #111111;
+  color: #ffffff;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .5px;
+
+  border-right: 1px solid #292929;
+
+  position: relative;
+  z-index: 10;
 }
 
-@keyframes pulse{
-  0%,100%{opacity:1}
-  50%{opacity:.35}
+/* RED DOT */
+
+.market-dot {
+  width: 7px;
+  height: 7px;
+
+  flex: 0 0 7px;
+
+  border-radius: 50%;
+
+  background: #ff3030;
+
+  box-shadow:
+    0 0 8px rgba(255,48,48,.9);
+
+  animation: marketPulse 1.4s infinite;
 }
 
-.ticker{
-  flex:1;
-  height:100%;
-  min-width:0;
-  overflow:hidden;
-}
+@keyframes marketPulse {
 
-.tradingview-widget-container{
-  width:100%;
-  height:100%;
-}
-
-@media(max-width:600px){
-
-  .market{
-    height:39px;
+  0%,
+  100% {
+    opacity: 1;
   }
 
-  .badge{
-    min-width:60px;
-    font-size:9px;
+  50% {
+    opacity: .35;
   }
 
-  .dot{
-    width:6px;
-    height:6px;
-  }
 }
+
+/* TRADINGVIEW AREA */
+
+.market-widget {
+  flex: 1 1 auto;
+
+  width: 0;
+
+  height: 50px;
+
+  overflow: hidden;
+
+  position: relative;
+}
+
+/*
+ IMPORTANT:
+ TradingView Ticker Tape needs enough
+ vertical space to render correctly.
+*/
+
+.market-widget .tradingview-widget-container {
+
+  width: 100% !important;
+
+  height: 50px !important;
+
+  margin: 0 !important;
+
+  padding: 0 !important;
+
+}
+
+.market-widget
+.tradingview-widget-container__widget {
+
+  width: 100% !important;
+
+  height: 50px !important;
+
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .market-ticker {
+    height: 46px;
+  }
+
+  .market-badge {
+
+    flex-basis: 62px;
+
+    height: 46px;
+
+    font-size: 9px;
+
+  }
+
+  .market-widget {
+
+    height: 46px;
+
+  }
+
+  .market-widget
+  .tradingview-widget-container {
+
+    height: 46px !important;
+
+  }
+
+  .market-widget
+  .tradingview-widget-container__widget {
+
+    height: 46px !important;
+
+  }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
-<div class="market">
+<div class="market-ticker">
 
-  <div class="badge">
-    <span class="dot"></span>
+  <!-- MARKET BADGE -->
+
+  <div class="market-badge">
+
+    <span class="market-dot"></span>
+
     <span>MARKET</span>
+
   </div>
 
-  <div class="ticker">
+
+  <!-- TRADINGVIEW -->
+
+  <div class="market-widget">
 
     <div
-      class="tradingview-widget-container"
-      style="height:100%;width:100%;">
+      class="tradingview-widget-container">
 
       <div
         class="tradingview-widget-container__widget">
       </div>
 
-      <div
-        style="
-          font-size:0;
-          height:0;
-          overflow:hidden;
-        ">
-      </div>
+
+      <script
+        type="text/javascript"
+        src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js"
+        async>
+
+      {
+        "symbols": [
+
+          {
+            "proName": "NSE:NIFTY",
+            "title": "NIFTY 50"
+          },
+
+          {
+            "proName": "BSE:SENSEX",
+            "title": "SENSEX"
+          },
+
+          {
+            "proName": "NSE:BANKNIFTY",
+            "title": "BANK NIFTY"
+          },
+
+          {
+            "proName": "FX_IDC:USDINR",
+            "title": "USD / INR"
+          },
+
+          {
+            "proName": "TVC:GOLD",
+            "title": "GOLD"
+          },
+
+          {
+            "proName": "TVC:SILVER",
+            "title": "SILVER"
+          },
+
+          {
+            "proName": "TVC:USOIL",
+            "title": "CRUDE OIL"
+          },
+
+          {
+            "proName": "BITSTAMP:BTCUSD",
+            "title": "BITCOIN"
+          }
+
+        ],
+
+        "showSymbolLogo": false,
+
+        "isTransparent": true,
+
+        "displayMode": "regular",
+
+        "colorTheme": "dark",
+
+        "locale": "en"
+
+      }
+
+      </script>
 
     </div>
 
   </div>
 
 </div>
-
-
-<script
-  type="text/javascript"
-  src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js"
-  async>
-
-{
-  "symbols": [
-
-    {
-      "proName":"NSE:NIFTY",
-      "title":"NIFTY 50"
-    },
-
-    {
-      "proName":"BSE:SENSEX",
-      "title":"SENSEX"
-    },
-
-    {
-      "proName":"NSE:BANKNIFTY",
-      "title":"BANK NIFTY"
-    },
-
-    {
-      "proName":"FX_IDC:USDINR",
-      "title":"USD / INR"
-    },
-
-    {
-      "proName":"TVC:GOLD",
-      "title":"GOLD"
-    },
-
-    {
-      "proName":"TVC:SILVER",
-      "title":"SILVER"
-    },
-
-    {
-      "proName":"TVC:USOIL",
-      "title":"CRUDE OIL"
-    },
-
-    {
-      "proName":"BITSTAMP:BTCUSD",
-      "title":"BITCOIN"
-    }
-
-  ],
-
-  "showSymbolLogo":false,
-  "isTransparent":true,
-  "displayMode":"adaptive",
-  "colorTheme":"dark",
-  "locale":"en"
-}
-
-</script>
 
 </body>
 </html>
